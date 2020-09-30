@@ -11,7 +11,7 @@
 
 # About
 
-Day-Log-Savings is a simple read write logger spearated by day files and then categorized by month and year folders.
+Day-Log-Savings is a simple Node js logger that lets you log things in files separated by date and then categorized by month and year.
 
 Logs are saved as such: `logs/<year>/<month>/<day>.log` in the root directory, for example `logs/2020/09/30.log`;
 
@@ -39,7 +39,7 @@ Write something to the logs, customizable with options.
 
 - **format [string]** - The format of the date and time, does not change log path. Uses moments format of formating. Defaults to "YYYY/MM/DD HH:mm:ss".
 
-- **length [number]** - The maximum length the message can be before being put on a new line. Defaults to "100".
+- **length [number]** - The maximum length the first line of the input can be before it is put on to a new line. Defaults to "100".
 
 - **stack [boolean]** - In case of an error, use stack property of Error. Defaults to "false".
 
@@ -76,9 +76,9 @@ Output an inputted number of last lines of a log, either as a string or an array
 
 **Options [object]** - [Optional] Additional options to customize the output.
 
-- **lines [number]** - The max number of lines to ouput. Defaults to "25".
+- **lines [number]** - The max number of lines that can be outputted. Defaults to "25".
 
-- **array [boolean]** - Whether you want the output in an array or not. Defaults to "false".
+- **array [boolean]** - Whether or not you want the output in an array. Each line is a new item in the array. Defaults to "false".
 
 ### Examples
 
