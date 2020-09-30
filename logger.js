@@ -71,12 +71,10 @@ function write(input, options) {
     if (prefix === "auto") prefix = error ? "ERROR" : "LOG";
     if (options.stack && error) input = input.stack || input;
     var time = moment().format(options.format);
-
-    path = ensureExists() + moment().format("DD") + ".log";
+    var path = ensureExists() + moment().format("DD") + ".log";
     if (error) input = `\n[${time}] [${prefix}]\n${input}\n\n`;
     else if (input.length < options.length) input = `[${time}] [${prefix}] ${input}\n`;
     else `[${time}] [${prefix}]\n${input}\n`;
-
     return appendFile(path, input, (err) => { if (err) throw err; else return "200" });
 };
 
@@ -103,10 +101,9 @@ function write(input, options) {
 * // ]
 */
 function read(input, options) {
-    var path = resolve(process.cwd(), "logs") + "/" + (path || moment().format("YYYY/MM/DD")) + ".log",
+    var path = resolve(process.cwd(), "logs") + "/" + (input || moment().format("YYYY/MM/DD")) + ".log",
         exists = existsSync(path);
     if (!exists) throw new Err(`File at ${path} does not exist.`, "DayLog ReadError");
-
     options = checkOptions(options, "read");
     var lines = readLastLines(path, options.lines).toString("utf8").split("\n").slice(0, -1);
     return options.array ? lines : lines.join("\n");
