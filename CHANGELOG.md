@@ -1,5 +1,5 @@
 ## 0.1.0 2020/09/30
-The first release, yet to be fully tested.
+The first release.
 - Added write function.
 - Added read function.
 
@@ -10,7 +10,11 @@ The first release, yet to be fully tested.
 - Made some small changes.
 
 ### 0.1.3 2020/09/30
-- Updated README.md
+- Updated README.md.
 
 ### 0.1.4 2020/09/30
 - Fixed path problem in read function.
+
+### 0.1.5 2020/10/01
+- Fixed a few misspellings.
+- Updated the README.md.

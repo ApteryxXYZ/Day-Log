@@ -1,7 +1,5 @@
 # Day-Log-Savings
-[![NPM Version][version-image]][npm-url]
-[![MIT License][license-image]][license-url]
-[![GitHub Star][github-star-image]][github-star-url]
+[![Version][version-image]][github-url][![Downloads][downloads-image]][npm-url][![JavaScript][javascript-image]][github-url][![License][license-image]][license-url]
 
 ### Table Of Contents
 - [**About**](#about)
@@ -98,11 +96,11 @@ loger.read("2020/09/30");
 // Latest 25 lines of the 30th of September 2020 log file.
 ```
 
+[version-image]: https://img.shields.io/github/package-json/v/ApteryxXYZ/day-log-savings?logo=github
+[downloads-image]: https://img.shields.io/npm/dt/day-log-savings?logo=npm
+[javascript-image]: https://img.shields.io/github/languages/top/ApteryxXYZ/Day-Log-Savings?logo=github
+[license-image]: https://img.shields.io/npm/l/day-log-savings?logo=github
+
 [npm-url]: https://npmjs.com/package/day-log-savings
-[version-image]: https://img.shields.io/badge/npm-v0.1.0-blue.svg?style=flat
-
 [license-url]: https://github.com/ApteryxXYZ/Day-Log-Savings/blob/master/LICENSE
-[license-image]: https://img.shields.io/badge/license-MIT-yellow.svg?style=flat
-
-[github-star-url]: https://github.com/ApteryxXYZ/Day-Log-Savings/stargazers/
-[github-star-image]: https://img.shields.io/github/stars/ApteryxXYZ/Day-Log-Savings.svg?style=social&label=Star
+[github-url]: https://github.com/ApteryxXYZ/Day-Log-Savings/

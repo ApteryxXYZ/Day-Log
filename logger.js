@@ -1,9 +1,9 @@
 /* CONSTS AND REQUIRES */
 
 const { existsSync, mkdirSync, appendFile } = require("fs"),
-    { readLastLines } = require("read-last-lines-ts"),
+    { readLastLines } = require("day-log-savings/node_modules/day-log-savings/node_modules/read-last-lines-ts"),
     { resolve } = require("path"),
-    moment = require("moment"),
+    moment = require("day-log-savings/node_modules/day-log-savings/node_modules/moment"),
     Err = class DayLog extends Error {
         constructor(input, name = null) {
             super();
@@ -15,7 +15,7 @@ const { existsSync, mkdirSync, appendFile } = require("fs"),
 
 /* PRIVATE FUNCTIONS */
 
-function checkOptions(options, from) {
+function check(options, from) {
     if (from === "write") {
         if (options) {
             if (typeof options !== "object") throw new Err("Type of options must be an object.", "DayLog WriteError");
@@ -28,14 +28,14 @@ function checkOptions(options, from) {
     } else if (from === "read") {
         if (options) {
             if (typeof options !== "object") throw new Err("Type of options must be an object.", "DayLog ReadError");
-            if (options.lines && typeof options.lines !== "number") throw new Err("Type of options.array must be a number.", "DayLog ReadError");
+            if (options.lines && typeof options.lines !== "number") throw new Err("Type of options.lines must be a number.", "DayLog ReadError");
             if (options.array && typeof options.array !== "boolean") throw new Err("Type of options.array must be a boolean.", "DayLog ReadError");
             return { lines: options.lines || 25, array: options.array || false };
         } else return { lines: 25, array: false };
     };
 };
 
-function ensureExists() {
+function ensure() {
     var root = resolve(process.cwd(), "logs") + "/",
         year = root + moment().format("YYYY") + "/",
         month = year + moment().format("MM") + "/";
@@ -53,25 +53,22 @@ function ensureExists() {
 * @param {string} [options.format] The format of the date and time, does not change log path. Uses moments format of formating. Defaults to YYYY/MM/DD HH:mm:ss.
 * @param {number} [options.length] The maximum length the input can be before being put on a new line. Defaults to 100.
 * @param {boolean} [options.stack] In case of an error, use stack property of Error. Defaults to false.
-* 
 * @example
 * const logger = require("day-log-savings");
-* 
 * logger.write("subscribe to pewdiepie");
 * // [2020/09/30 00:00:00] [LOG] subscribe to pewdiepie
-* 
 * logger.write("SUBSCRIBE TO PEWDIEPIE", { prefix: "PEWDS", format: "HH:mm:ss DD/MM/YYYY", length: 1});
 * // [00:00:00 30/09/2020] [PEWDS]
 * // SUBSCRIBE TO PEWDIEPIE
 */
 function write(input, options) {
     if (!input) throw new Err("Missing required input parameter.", "DayLog WriteError");
-    options = checkOptions(options, "write");
+    options = check(options, "write");
     var error = input instanceof Error, prefix = options.prefix;
     if (prefix === "auto") prefix = error ? "ERROR" : "LOG";
     if (options.stack && error) input = input.stack || input;
-    var time = moment().format(options.format);
-    var path = ensureExists() + moment().format("DD") + ".log";
+    var time = moment().format(options.format),
+        path = ensure() + moment().format("DD") + ".log";
     if (error) input = `\n[${time}] [${prefix}]\n${input}\n\n`;
     else if (input.length < options.length) input = `[${time}] [${prefix}] ${input}\n`;
     else `[${time}] [${prefix}]\n${input}\n`;
@@ -84,15 +81,12 @@ function write(input, options) {
 * @param {object} options [Optional] Additional options to customize the output.
 * @param {number} [options.lines] The max number of lines to ouput. Defaults to 25.
 * @param {boolean} [options.array] Whether you want the output in an array or not. Defaults to false.
-* 
 * @example
 * const logger = require("day-log-savings");
-* 
 * logger.read();
 * // [2020/09/30 00:00:00] [LOG] subscribe to pewdiepie
 * // [00:00:00 30/09/2020] [PEWDS]
 * // SUBSCRIBE TO PEWDIEPIE
-* 
 * logger.read("2020/09/30", { lines: 3, array: true })
 * // [
 * //  "[2020/09/30 00:00:00] [LOG] subscribe to pewdiepie",
@@ -104,7 +98,7 @@ function read(input, options) {
     var path = resolve(process.cwd(), "logs") + "/" + (input || moment().format("YYYY/MM/DD")) + ".log",
         exists = existsSync(path);
     if (!exists) throw new Err(`File at ${path} does not exist.`, "DayLog ReadError");
-    options = checkOptions(options, "read");
+    options = check(options, "read");
     var lines = readLastLines(path, options.lines).toString("utf8").split("\n").slice(0, -1);
     return options.array ? lines : lines.join("\n");
 };
