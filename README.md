@@ -87,7 +87,7 @@ logger.read();
 // Latest 25 lines of todays log file.
 
 logger.read(null, { lines: 100 });
-// Latest 100 lines of todatys log file.
+// Latest 100 lines of todays log file.
 
 logger.read(null, { array: true });
 // Latest 25 lines of todays log file as an array, one item per line.

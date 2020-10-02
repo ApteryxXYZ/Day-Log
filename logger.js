@@ -1,9 +1,9 @@
 /* CONSTS AND REQUIRES */
 
 const { existsSync, mkdirSync, appendFile } = require("fs"),
-    { readLastLines } = require("day-log-savings/node_modules/day-log-savings/node_modules/read-last-lines-ts"),
+    { readLastLines } = require("read-last-lines-ts"),
     { resolve } = require("path"),
-    moment = require("day-log-savings/node_modules/day-log-savings/node_modules/moment"),
+    moment = require("moment"),
     Err = class DayLog extends Error {
         constructor(input, name = null) {
             super();

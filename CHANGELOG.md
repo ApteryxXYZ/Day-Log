@@ -18,3 +18,6 @@ The first release.
 ### 0.1.5 2020/10/01
 - Fixed a few misspellings.
 - Updated the README.md.
+
+### 0.1.6 2020/10/02
+- Fixed requiring of some modules.
