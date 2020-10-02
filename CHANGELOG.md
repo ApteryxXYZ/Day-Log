@@ -21,3 +21,7 @@ The first release.
 
 ### 0.1.6 2020/10/02
 - Fixed requiring of some modules.
+
+## 0.2.0 2020/10/02
+- The read function now reads the entire log file.
+- To read the last few lines of a file, use the 'lines' option.

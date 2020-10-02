@@ -1,6 +1,6 @@
 /* CONSTS AND REQUIRES */
 
-const { existsSync, mkdirSync, appendFile } = require("fs"),
+const { existsSync, mkdirSync, appendFile, readFileSync } = require("fs"),
     { readLastLines } = require("read-last-lines-ts"),
     { resolve } = require("path"),
     moment = require("moment"),
@@ -28,10 +28,10 @@ function check(options, from) {
     } else if (from === "read") {
         if (options) {
             if (typeof options !== "object") throw new Err("Type of options must be an object.", "DayLog ReadError");
-            if (options.lines && typeof options.lines !== "number") throw new Err("Type of options.lines must be a number.", "DayLog ReadError");
             if (options.array && typeof options.array !== "boolean") throw new Err("Type of options.array must be a boolean.", "DayLog ReadError");
-            return { lines: options.lines || 25, array: options.array || false };
-        } else return { lines: 25, array: false };
+            if (options.lines && typeof options.lines !== "number") throw new Err("Type of options.lines must be a number.", "DayLog ReadError");
+            return { array: options.array || false, lines: options.lines || 0 };
+        } else return { array: false, lines: 0 };
     };
 };
 
@@ -49,10 +49,10 @@ function ensure() {
 * Write something to the logs, customizable with options.
 * @param {string} input [Required] The input of which you want to be logged.
 * @param {object} options [Optional] Additional options to customize the input.
-* @param {string} [options.prefix] The prefix which appears before the log input, case sensitive. Use auto to automatically choose an appropriate prefix. Defaults to auto.
-* @param {string} [options.format] The format of the date and time, does not change log path. Uses moments format of formating. Defaults to YYYY/MM/DD HH:mm:ss.
-* @param {number} [options.length] The maximum length the input can be before being put on a new line. Defaults to 100.
-* @param {boolean} [options.stack] In case of an error, use stack property of Error. Defaults to false.
+* @param {string} [options.prefix] The prefix which appears before the log input, case sensitive. Use auto to automatically choose an appropriate prefix. Defaults to 'auto'.
+* @param {string} [options.format] The format of the date and time, does not change log path. Uses moments format of formating. Defaults to 'YYYY/MM/DD HH:mm:ss'.
+* @param {number} [options.length] The maximum length the input can be before being put on a new line. Defaults to '100'.
+* @param {boolean} [options.stack] In case of an error, use stack property of Error. Defaults to 'false'.
 * @example
 * const logger = require("day-log-savings");
 * logger.write("subscribe to pewdiepie");
@@ -76,30 +76,30 @@ function write(input, options) {
 };
 
 /**
-* Output an inputted number of last lines of a log, either as a string or an array.
+* 
 * @param {string} path [Optional] The path to the file you want to read. Defaults to todays logs.
 * @param {object} options [Optional] Additional options to customize the output.
-* @param {number} [options.lines] The max number of lines to ouput. Defaults to 25.
-* @param {boolean} [options.array] Whether you want the output in an array or not. Defaults to false.
+* @param {boolean} [options.array] Whether you want the output in an array or not. Defaults to 'false'.
+* @param {number} [options.lines] The number of latest lines you want read, instead of the entire file. Defaults to 'null'.
 * @example
 * const logger = require("day-log-savings");
 * logger.read();
 * // [2020/09/30 00:00:00] [LOG] subscribe to pewdiepie
 * // [00:00:00 30/09/2020] [PEWDS]
 * // SUBSCRIBE TO PEWDIEPIE
-* logger.read("2020/09/30", { lines: 3, array: true })
+* logger.read("2020/09/30", { array: true, lines: 2 })
 * // [
-* //  "[2020/09/30 00:00:00] [LOG] subscribe to pewdiepie",
 * //  "[00:00:00 30/09/2020] [PEWDS]",
 * //  "SUBSCRIBE TO PEWDIEPIE"
 * // ]
 */
 function read(input, options) {
     var path = resolve(process.cwd(), "logs") + "/" + (input || moment().format("YYYY/MM/DD")) + ".log",
-        exists = existsSync(path);
+        exists = existsSync(path), lines;
     if (!exists) throw new Err(`File at ${path} does not exist.`, "DayLog ReadError");
     options = check(options, "read");
-    var lines = readLastLines(path, options.lines).toString("utf8").split("\n").slice(0, -1);
+    if (options.lines > 0) lines = readLastLines(path, options.lines).toString("utf8").split("\n").slice(0, -1);
+    else lines = readFileSync(path).toString().split("\n").slice(0, -1);
     return options.array ? lines : lines.join("\n");
 };
 

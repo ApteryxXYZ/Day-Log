@@ -1,4 +1,6 @@
-# Day-Log-Savings
+█▀▄ ▄▀█ █▄█ ▄▄ █░░ █▀█ █▀▀ ▄▄ █▀ ▄▀█ █░█ █ █▄░█ █▀▀ █▀
+█▄▀ █▀█ ░█░ ░░ █▄▄ █▄█ █▄█ ░░ ▄█ █▀█ ▀▄▀ █ █░▀█ █▄█ ▄█
+
 [![Version][version-image]][github-url][![Downloads][downloads-image]][npm-url][![JavaScript][javascript-image]][github-url][![License][license-image]][license-url]
 
 ### Table Of Contents
@@ -9,9 +11,9 @@
 
 # About
 
-Day-Log-Savings is a simple Node js logger that lets you log things in files separated by date and then categorized by month and year.
+Day-Log-Savings is a simple Node js logger that lets you log things in files separated by date and then categorized by month and year. With new log files created each day automatically.
 
-Logs are saved as such: `logs/<year>/<month>/<day>.log` in the root directory, for example `logs/2020/09/30.log`;
+Logs are saved as such: `logs/<year>/<month>/<day>.log` in the root directory, for example `logs/2020/09/30.log`.
 
 # Installation
 
@@ -23,7 +25,7 @@ Write something to the logs, customizable with options.
 
 ### Usage
 
-**Function: `<logger>.write(<input>, <options>)`**
+**Function: `<logger>.write(<input>, [options])`**
 
 **Output: `[<format>] [<prefix>] <input>`**
 
@@ -62,21 +64,21 @@ logger.write("Max first line length.", { length: 1 });
 
 # Read
 
-Output an inputted number of last lines of a log, either as a string or an array.
+Reads and outputs an entire log file, or using the options, can just output the last number lines.
 
 ### Usage
 
-**Function: `<logger>.read(<path>, <options>)`**
+**Function: `<logger>.read([path], [options])`**
 
-**Options: `{ lines: <number>, array: <boolean> }`**
+**Options: `{ array: <boolean>, lines: <number> }`**
 
 **Path [string]** - [Optional] The path to the file you want to read. Defaults to todays logs.
 
 **Options [object]** - [Optional] Additional options to customize the output.
 
-- **lines [number]** - The max number of lines that can be outputted. Defaults to "25".
-
 - **array [boolean]** - Whether or not you want the output in an array. Each line is a new item in the array. Defaults to "false".
+
+- **lines [number]** - The number of latest lines you want read, instead of the entire file. Defaults to 'null'.
 
 ### Examples
 
@@ -84,17 +86,19 @@ Output an inputted number of last lines of a log, either as a string or an array
 const logger = require("day-log-savings");
 
 logger.read();
-// Latest 25 lines of todays log file.
+// All the lines of todays log file.
 
 logger.read(null, { lines: 100 });
 // Latest 100 lines of todays log file.
 
 logger.read(null, { array: true });
-// Latest 25 lines of todays log file as an array, one item per line.
+// All the lines of todays log file as an array, one item per line.
 
 loger.read("2020/09/30");
-// Latest 25 lines of the 30th of September 2020 log file.
+// All the lines of 30th of the September 2020 log file.
 ```
+
+###### Blackbox Software 2020
 
 [version-image]: https://img.shields.io/github/package-json/v/ApteryxXYZ/day-log-savings?logo=github
 [downloads-image]: https://img.shields.io/npm/dt/day-log-savings?logo=npm
