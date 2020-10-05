@@ -1,7 +1,7 @@
 ## 0.1.0 2020/09/30
 The first release.
-- Added write function.
-- Added read function.
+- Added write function (writes to a log file).
+- Added read function (reads a log file).
 
 ### 0.1.1 2020/09/30
 - Removed node-schedule as it was unused.
@@ -25,3 +25,6 @@ The first release.
 ## 0.2.0 2020/10/02
 - The read function now reads the entire log file.
 - To read the last few lines of a file, use the 'lines' option.
+
+## 0.3.0 2020/10/06
+- Added remove function (deletes a log file).

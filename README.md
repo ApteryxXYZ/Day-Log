@@ -1,5 +1,4 @@
-█▀▄ ▄▀█ █▄█ ▄▄ █░░ █▀█ █▀▀ ▄▄ █▀ ▄▀█ █░█ █ █▄░█ █▀▀ █▀
-█▄▀ █▀█ ░█░ ░░ █▄▄ █▄█ █▄█ ░░ ▄█ █▀█ ▀▄▀ █ █░▀█ █▄█ ▄█
+# Dᴀʏ-Lᴏɢ-Sᴀᴠɪɴɢs
 
 [![Version][version-image]][github-url][![Downloads][downloads-image]][npm-url][![JavaScript][javascript-image]][github-url][![License][license-image]][license-url]
 
@@ -8,6 +7,7 @@
 - [**Installation**](#installation)
 - [**Write**](#write)
 - [**Read**](#read)
+- [**Remove**](#remove)
 
 # About
 
@@ -21,7 +21,7 @@ Logs are saved as such: `logs/<year>/<month>/<day>.log` in the root directory, f
 
 # Write
 
-Write something to the logs, customizable with options.
+Writes something to the logs, customizable with options.
 
 ### Usage
 
@@ -96,6 +96,28 @@ logger.read(null, { array: true });
 
 loger.read("2020/09/30");
 // All the lines of 30th of the September 2020 log file.
+```
+
+# Remove
+
+Deletes a log file.
+
+### Usage
+
+**Function: `<logger>.remove([path])`**
+
+**Path [string]** - [Optional] The path to the file you want to read. Defaults to todays logs.
+
+### Examples
+
+```
+const logger = require("day-log-savings");
+
+logger.remove();
+// Deletes todays log file.
+
+loger.remove("2020/09/30");
+// Deletes the 30th of the September 2020 log file.
 ```
 
 ###### Blackbox Software 2020
