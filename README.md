@@ -72,7 +72,7 @@ Reads and outputs an entire log file, or using the options, can just output the 
 
 **Options: `{ array: <boolean>, lines: <number> }`**
 
-**Path [string]** - [Optional] The path to the file you want to read. Defaults to todays logs.
+**Path [string]** - [Optional] The path to the file you want to read. Defaults to todays log file.
 
 **Options [object]** - [Optional] Additional options to customize the output.
 
@@ -106,7 +106,7 @@ Deletes a log file.
 
 **Function: `<logger>.remove([path])`**
 
-**Path [string]** - [Optional] The path to the file you want to read. Defaults to todays logs.
+**Path [string]** - [Optional] The path to the file you want to delete. Defaults to todays log file.
 
 ### Examples
 
@@ -116,7 +116,7 @@ const logger = require("day-log-savings");
 logger.remove();
 // Deletes todays log file.
 
-loger.remove("2020/09/30");
+logger.remove("2020/09/30");
 // Deletes the 30th of the September 2020 log file.
 ```
 

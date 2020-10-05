@@ -28,3 +28,6 @@ The first release.
 
 ## 0.3.0 2020/10/06
 - Added remove function (deletes a log file).
+
+### 0.3.1 2020/10/06
+- Updated README.md.
