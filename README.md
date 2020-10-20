@@ -2,24 +2,25 @@
 
 [![Version][version-image]][github-url][![Downloads][downloads-image]][npm-url][![JavaScript][javascript-image]][github-url][![License][license-image]][license-url]
 
-### Table Of Contents
+## Table Of Contents
+
 - [**About**](#about)
 - [**Installation**](#installation)
 - [**Write**](#write)
 - [**Read**](#read)
 - [**Remove**](#remove)
 
-# About
+## About
 
 Day-Log-Savings is a simple Node js logger that lets you log things in files separated by date and then categorized by month and year. With new log files created each day automatically.
 
 Logs are saved as such: `logs/<year>/<month>/<day>.log` in the root directory, for example `logs/2020/09/30.log`.
 
-# Installation
+## Installation
 
 `npm install day-log-savings`
 
-# Write
+## Write
 
 Writes something to the logs, customizable with options.
 
@@ -37,7 +38,7 @@ Writes something to the logs, customizable with options.
 
 - **prefix [string]** - The prefix which appears before the log message, case sensitive. Use "auto" to automatically choose an appropriate prefix. Defaults to "auto".
 
-- **format [string]** - The format of the date and time, does not change log path. Uses moments format of formating. Defaults to "YYYY/MM/DD HH:mm:ss".
+- **format [string]** - The format of the date and time, does not change log path. Uses [moments](https://momentjs.com) format of formating. Defaults to "YYYY/MM/DD HH:mm:ss".
 
 - **length [number]** - The maximum length the first line of the input can be before it is put on to a new line. Defaults to "100".
 
@@ -49,20 +50,20 @@ Writes something to the logs, customizable with options.
 const logger = require("day-log-savings");
 
 logger.write("Regular input.");
-// [2020/09/30 00:00:00] [LOG] Regular input.
+// [00:00:00] [LOG] Regular input.
 
 logger.write("Custom prefix.", { prefix: "CUSTOM"});
-// [2020/09/30 00:00:00] [CUSTOM] Custom prefix.
+// [00:00:00] [CUSTOM] Custom prefix.
 
 logger.write("A new date and time format.", { format: "HH:mm:ss DD/MM/YYYY" });
 // [00:00:00 30/09/2020] [LOG] A new date and time format.
 
 logger.write("Max first line length.", { length: 1 });
-// [2020/09/30 00:00:00] [LOG]
+// [00:00:00] [LOG]
 // Max first line length.
 ```
 
-# Read
+## Read
 
 Reads and outputs an entire log file, or using the options, can just output the last number lines.
 
@@ -98,7 +99,7 @@ loger.read("2020/09/30");
 // All the lines of 30th of the September 2020 log file.
 ```
 
-# Remove
+## Remove
 
 Deletes a log file.
 
@@ -120,7 +121,9 @@ logger.remove("2020/09/30");
 // Deletes the 30th of the September 2020 log file.
 ```
 
-###### Blackbox Software 2020
+Note: You can change the default options by editing the 'WRITE_DEFAULTS' and 'READ_DEFAULTS' constants at the top of the src/index.js file.
+
+#### Blackbox Software 2020
 
 [version-image]: https://img.shields.io/github/package-json/v/ApteryxXYZ/day-log-savings?logo=github
 [downloads-image]: https://img.shields.io/npm/dt/day-log-savings?logo=npm

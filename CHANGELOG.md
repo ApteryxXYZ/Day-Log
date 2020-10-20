@@ -31,3 +31,7 @@ The first release.
 
 ### 0.3.1 2020/10/06
 - Updated README.md.
+
+## 0.4.0 2020/10/20
+- Logs will now only have time, rather than both date and time.
+- To use both date and time use the 'format' option.

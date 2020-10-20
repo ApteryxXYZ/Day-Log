@@ -1,8 +1,8 @@
 {
     "name": "day-log-savings",
-    "version": "0.3.1",
+    "version": "0.4.0",
     "description": "A simple, daily log file Node.js logger.",
-    "main": "logger.js",
+    "main": "src/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ApteryxXYZ/Day-Log-Savings.git"
