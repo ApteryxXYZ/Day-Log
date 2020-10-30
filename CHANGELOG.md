@@ -35,3 +35,7 @@ The first release.
 ## 0.4.0 2020/10/20
 - Logs will now only have time, rather than both date and time.
 - To use both date and time use the 'format' option.
+
+## 0.5.0 2020/10/30
+- Module no longer uses any other dependencies.
+- The read function no longer reads the entire file, but the last 15 lines (by default).

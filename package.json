@@ -1,6 +1,6 @@
 {
     "name": "day-log-savings",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "A simple, daily log file Node.js logger.",
     "main": "src/index.js",
     "repository": {
@@ -14,15 +14,12 @@
         "month",
         "year"
     ],
-    "author": "Blackbox Software",
+    "author": {
+        "name": "Apteryx"
+    },
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/ApteryxXYZ/Day-Log-Savings/issues"
     },
-    "homepage": "https://github.com/ApteryxXYZ/Day-Log-Savings#readme",
-    "dependencies": {
-        "moment": "^2.29.0",
-        "path": "^0.12.7",
-        "read-last-lines-ts": "^1.1.0"
-    }
+    "homepage": "https://github.com/ApteryxXYZ/Day-Log-Savings#readme"
 }

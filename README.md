@@ -12,25 +12,24 @@
 
 ## About
 
-Day-Log-Savings is a simple Node js logger that lets you log things in files separated by date and then categorized by month and year. With new log files created each day automatically.
-
-Logs are saved as such: `logs/<year>/<month>/<day>.log` in the root directory, for example `logs/2020/09/30.log`.
+Dᴀʏ-Lᴏɢ-Sᴀᴠɪɴɢs is a simple, zero dependencies, Node.js logger that lets you log things in organized files. Each day, a new log file is created, that file is then categorized into month and year folders.<br />Log querys are logged as `[<time>] [<prefix>] <input>` in the dates log file which is saved as `<project root>/logs/<year>/<month>/<day>.log`.
+For example: `/logs/2020/10/31.log`.
 
 ## Installation
 
-`npm install day-log-savings`
+```npm install day-log-savings```
 
 ## Write
 
-Writes something to the logs, customizable with options.
+Write something to the logs, customize with options.
 
-### Usage
+### Usages
 
-**Function: `<logger>.write(<input>, [options])`**
+**Functions: `<logger>.write(<input>, [options])`**
 
-**Output: `[<format>] [<prefix>] <input>`**
+**Output: `[<time>] [<prefix>] <input>`**
 
-**Options: `{ prefix: <string>, format: <string>, length: <number>, stack: <boolean> }`**
+**Options: `{ prefix: <string>, length: <number>, stack: <boolean> }`**
 
 **Input [string]** - [Required] The input in which you want to be logged.
 
@@ -38,30 +37,29 @@ Writes something to the logs, customizable with options.
 
 - **prefix [string]** - The prefix which appears before the log message, case sensitive. Use "auto" to automatically choose an appropriate prefix. Defaults to "auto".
 
-- **format [string]** - The format of the date and time, does not change log path. Uses [moments](https://momentjs.com) format of formating. Defaults to "YYYY/MM/DD HH:mm:ss".
-
 - **length [number]** - The maximum length the first line of the input can be before it is put on to a new line. Defaults to "100".
 
 - **stack [boolean]** - In case of an error, use stack property of Error. Defaults to "false".
 
 ### Examples
 
-```
+```js
 const logger = require("day-log-savings");
 
 logger.write("Regular input.");
+// Logs:
 // [00:00:00] [LOG] Regular input.
 
-logger.write("Custom prefix.", { prefix: "CUSTOM"});
-// [00:00:00] [CUSTOM] Custom prefix.
-
-logger.write("A new date and time format.", { format: "HH:mm:ss DD/MM/YYYY" });
-// [00:00:00 30/09/2020] [LOG] A new date and time format.
+logger.write("Custom prefix.", { prefix: "CuStOm"});
+// Logs:
+// [00:00:00] [CuStOm] Custom prefix.
 
 logger.write("Max first line length.", { length: 1 });
+// Logs:
 // [00:00:00] [LOG]
 // Max first line length.
 ```
+
 
 ## Read
 
@@ -83,20 +81,20 @@ Reads and outputs an entire log file, or using the options, can just output the 
 
 ### Examples
 
-```
+```js
 const logger = require("day-log-savings");
 
 logger.read();
-// All the lines of todays log file.
-
-logger.read(null, { lines: 100 });
-// Latest 100 lines of todays log file.
-
-logger.read(null, { array: true });
-// All the lines of todays log file as an array, one item per line.
+// Returns the last 15 lines of todays log file
 
 loger.read("2020/09/30");
-// All the lines of 30th of the September 2020 log file.
+// Returns the last 15 lines of 30th of the September 2020 log file.
+
+logger.read(null, { lines: 100 });
+// Returns the latest 100 lines of todays log file.
+
+logger.read(null, { array: true });
+//  Returns the last 15 lines of todays log file as an array, one line per item.
 ```
 
 ## Remove
@@ -111,7 +109,7 @@ Deletes a log file.
 
 ### Examples
 
-```
+```js
 const logger = require("day-log-savings");
 
 logger.remove();
@@ -121,7 +119,7 @@ logger.remove("2020/09/30");
 // Deletes the 30th of the September 2020 log file.
 ```
 
-Note: You can change the default options by editing the 'WRITE_DEFAULTS' and 'READ_DEFAULTS' constants at the top of the src/index.js file.
+You can change things like log file save loaction, write, and read defaults by editing the `DEFAULTS` object at the top of the modules `src/index.js` file.
 
 #### Blackbox Software 2020
 
