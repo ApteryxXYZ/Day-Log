@@ -39,3 +39,7 @@ The first release.
 ## 0.5.0 2020/10/30
 - Module no longer uses any other dependencies.
 - The read function no longer reads the entire file, but the last 15 lines (by default).
+
+### 0.5.1 2020/10/31
+- Fixed remove function removing todays log file even with input.
+- Updated README.md. 

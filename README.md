@@ -63,7 +63,7 @@ logger.write("Max first line length.", { length: 1 });
 
 ## Read
 
-Reads and outputs an entire log file, or using the options, can just output the last number lines.
+Reads and outputs the last 15 lines of a log file, or using the options, can output any number of lines.
 
 ### Usage
 
@@ -77,7 +77,7 @@ Reads and outputs an entire log file, or using the options, can just output the 
 
 - **array [boolean]** - Whether or not you want the output in an array. Each line is a new item in the array. Defaults to "false".
 
-- **lines [number]** - The number of latest lines you want read, instead of the entire file. Defaults to 'null'.
+- **lines [number]** - The number of latest lines you want read. Defaults to '15'.
 
 ### Examples
 

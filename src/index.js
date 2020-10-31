@@ -1,7 +1,7 @@
 const DEFAULTS = {
-    WRITE: { prefix: "auto", format: "HH:mm:ss", length: 100, stack: false },
-    READ: { array: false, lines: 15 },
-    ROOT: `${process.cwd()}/logs`
+        WRITE: { prefix: "auto", format: "HH:mm:ss", length: 100, stack: false },
+        READ: { array: false, lines: 15 },
+        ROOT: `${process.cwd()}/logs`
     },
     fs = require("fs"),
     { version } = require("../package.json");
@@ -102,9 +102,9 @@ function read(path, options) {
  */
 function remove(path) {
     if (path && typeof path !== "string") throw new Error("Type of path must be a string.");
-    var p = `${DEFAULTS.ROOT}/${_date(true)}.log`
+    let p = `${DEFAULTS.ROOT}/${path || _date(true)}.log`
     if (!fs.existsSync(p)) throw Error(`File at '${p}' does not exist.`);
-    return fs.unlinkSync(p, (e) => { if (e) throw e; });
+    return fs.unlinkSync(p, (e) => { if (e) throw e; }) || void 0;
 }
 
 module.exports = { write, read, remove, version };
