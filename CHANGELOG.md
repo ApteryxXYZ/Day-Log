@@ -42,4 +42,11 @@ The first release.
 
 ### 0.5.1 2020/10/31
 - Fixed remove function removing todays log file even with input.
+- Updated README.md.
+
+## 0.6.0 2020/11/23
+- Fixed read function reading todays log file even with input.
+- Added `stringify` option to write function, stringifys the input if it's an instance of 'Object'.
+- Remove function now returns the date/path (2020/11/23) to the file that was just deleted.
+- Added more information to errors.
 - Updated README.md. 

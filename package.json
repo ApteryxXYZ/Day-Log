@@ -1,23 +1,35 @@
 {
     "name": "day-log-savings",
-    "version": "0.5.1",
+    "version": "0.6.0",
     "description": "A simple, zero dependencies, Node.js day base file logger.",
-    "main": "src/index.js",
+    "author": {
+        "name": "Apteryx",
+        "url": "https://www.apteryx.xyz/"
+    },
+    "license": "MIT",
+    "homepage": "https://www.apteryx.xyz/npm/day-log-savings",
+    "bugs": {
+        "url": "https://github.com/ApteryxXYZ/Day-Log-Savings/issues"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ApteryxXYZ/Day-Log-Savings.git"
     },
+    "main": "src/index.js",
+    "directories": {
+        "src": "src"
+    },
+    "files": [
+        "src/index.js"
+    ],
+    "bundleDependencies": false,
+    "dependencies": {},
+    "deprecated": false,
     "keywords": [
         "logger",
         "nodejs",
         "day",
         "month",
         "year"
-    ],
-    "author": "Blackbox Software",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/ApteryxXYZ/Day-Log-Savings/issues"
-    },
-    "homepage": "https://github.com/ApteryxXYZ/Day-Log-Savings#readme"
+    ]
 }
