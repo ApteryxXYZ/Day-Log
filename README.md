@@ -11,11 +11,14 @@
 - [**Write**](#write)
 - [**Read**](#read)
 - [**Remove**](#remove)
+- [**Defaults**](#defaults)
 
 ## About
 
-Day Log Savings is a simple, zero dependencies, Node.js logger that lets you log things in organized files. Each day, a new log file is created, that file is then categorized into month and year folders.<br />Log querys are logged as `[<time>] [<prefix>] <input>` in the dates log file which is saved as `<project root>/logs/<year>/<month>/<day>.log`.
-For example: `/logs/2020/10/31.log`.
+Day Log Savings is a simple, zero dependencies, Node.js logger that lets you log things in organized, day rotating files.<br>
+The name is a play on words of daylight savings, which started when this module was first created.
+
+Each day, a new log file is created, that file is then categorised into month and year folders.<br>By default, querys are logged like so: `[<time>] [<prefix>] <input>` but you can customize this by using the functions options or changing the defaults. Those querys are then written into log files and saved at `<project root>/logs/<year>/<month>/<day>.log`. For example: `/logs/2020/11/27.log`.
 
 ## Installation
 
@@ -23,112 +26,126 @@ For example: `/logs/2020/10/31.log`.
 
 ## Write
 
-Write something to the logs, customize with options.
-
-### Usages
-
-**Function: `<logger>.write(<input>, [options])`**
-
-**Output: `[<time>] [<prefix>] <input>`**
-
-**Options: `{ prefix: <string>, length: <number>, stack: <boolean> }`**
-
-**Input [string]** - [Required] The input in which you want to be logged.
-
-**Options [object]** - [Optional] Additional options to customize the input.
-
-- **prefix [string]** - The prefix which appears before the log message, case sensitive. Use 'auto' to automatically choose an appropriate prefix. Defaults to 'auto'.
-
-- **length [number]** - The maximum length the first line of the input can be before it is put on to a new line. Defaults to '100'.
-
-- **stringify [boolean]** - If the input is an instance of 'Object', then stringify it. Defaults to 'true'.
-
-- **stack [boolean]** - In case of an error, use stack property of Error. Defaults to 'false'.
-
-### Examples
-
-```js
-const logger = require('day-log-savings');
-
-logger.write('Regular input.');
-// Logs:
-// [00:00:00] [LOG] Regular input.
-
-logger.write('Custom prefix.', { prefix: 'CuStOm'});
-// Logs:
-// [00:00:00] [CuStOm] Custom prefix.
-
-logger.write('Max first line length.', { length: 1 });
-// Logs:
-// [00:00:00] [LOG]
-// Max first line length.
-```
-
-### Console Log
-
-If you want what was just added the the log files, to be logged within the console, then simply put the write function within the `console.log` function. Like so: `console.log(logger.write("Regular input."))`. The write function returns what was just logged.
-
-## Read
-
-Reads and outputs the last 15 lines of a log file, or using the options, can output any number of lines.
+Writes an input to the logs, customizable with options.
 
 ### Usage
 
-**Function: `<logger>.read([path], [options])`**
+**Function**: `<logger>.write(<input>, [options]);`<br>
+**Returns**: The string which was just logged.
 
-**Options: `{ array: <boolean>, lines: <number> }`**
+**Input {any}**: The input which you want to be logged.<br>
+**Options {object}**: {
 
-**Path [string]** - [Optional] The path to the file you want to read. Defaults to todays log file.
+- **Prefix {string}**: The prefix which appears before the log input, case sentitive. In case of error, prefix is automatically changed to 'ERROR'. Defaults to 'LOG'.
+- **Format {string}**: The format in which your input will be logged in. Use '%option' to define where within the string things like 'time', 'prefix' and 'message' appear. Options are 'time', 'date', 'prefix' and 'message'. Defaults to '[%time] [%prefix] %message'.
+- **Length {number}**: The maximum length the input can be before being put on a new line. Defaults to '100'.
+- **Console {boolean}**: Whether or not to log the query in the console along with the log file. Errors will always be logged. Defaults to 'false'.
+- **Stringify {boolean}**: If the input is an instance of 'Object', then JSON.stringify() it . Defaults to 'true'.
+- **Stack {boolean}**: If the input is an instance of 'Error', then use the stack property of it. Defaults to 'true'.
 
-**Options [object]** - [Optional] Additional options to customize the output.
-
-- **array [boolean]** - Whether or not you want the output in an array. Each line is a new item in the array. Defaults to 'false'.
-
-- **lines [number]** - The number of latest lines you want read. Defaults to '15'.
+}
 
 ### Examples
 
 ```js
-const logger = require('day-log-savings');
+logger.write('Input using the default options.');
+// [00:00:00] [LOG] Input using the default options.
 
+logger.write('Has a custom prefix.', { prefix: 'cUsToM' });
+// [00:00:00] [cUsToM] Has a custom prefix.
+
+logger.write('Custom format with date.', { format: '%date %time %prefix: %message' });
+// 2020/11/27 00:00:00 LOG: Custom format with date.
+
+logger.write('Max first line input length reached.', { length: 1 });
+// [00:00:00] [LOG]
+// Max first line input length reached.
+
+logger.write("This will be logged in the console and log file.", { console: true });
+// Console & Log File:
+// [00:00] [LOG] This will be logged in the console and log file.
+
+logger.write(new Error('This error will not be stacked.'), { stack: false });
+// [00:00:00] [ERROR] This error will not be stacked.
+
+logger.write({ thisObjectWill: 'not be stringified' }, { stringify: false });
+// [00:00:00] [LOG] [object Object]
+```
+
+## Read 
+
+Reads and outputs the last x number lines from the bottom of a log file.
+
+### Usage
+
+**Function**: `<logger>.read([options]);`<br>
+**Returns**: The last x number of lines of a log file.
+
+**Options {object}**: {
+
+- **Path {string}**: The path, formated as 'year/month/day', to the log file which you want to read. Defaults to to todays date.
+- **Lines {number}**: The number of lines you want to read. Defaults to '15'.
+- **Array {boolean}**: Whether you want the output in an array (where one line equal one item) or not. Defaults to 'false'.
+- **Blanks {boolean}**: Whether or not to include blank lines in the output, both string and array. Defaults to 'true'.
+
+}
+
+### Examples
+
+```js
 logger.read();
-// Returns the last 15 lines of todays log file
+// Returns a string containing the last 15 lines of todays log file.
 
-loger.read('2020/09/30');
-// Returns the last 15 lines of 30th of the September 2020 log file.
+logger.read({ path: '2020/11/27', lines: 5 });
+// Returns a string containing the last 5 lines of the 27th of November 2020 log file.
 
-logger.read(null, { lines: 100 });
-// Returns the latest 100 lines of todays log file.
-
-logger.read(null, { array: true });
-//  Returns the last 15 lines of todays log file as an array, one line per item.
+logger.read({ array: true, blanks: false });
+// Returns an array containing the last 15 lines of todays log file with all the blank lines removed.
 ```
 
 ## Remove
 
 Deletes a log file.
 
-### Usage
+## Usage
 
-**Function: `<logger>.remove([path])`**
+**Function**: `<logger>.remove([path]);`<br>
+**Returns**: The path, formated as 'year/month/day', to the file that was just deleted.
 
-**Path [string]** - [Optional] The path to the file you want to delete. Defaults to todays log file.
-
-### Examples
+**Path {string}**: The path, formated as 'year/month/day', to the log file which you want to delete. Defaults to to todays date.
 
 ```js
-const logger = require('day-log-savings');
-
 logger.remove();
 // Deletes todays log file.
 
-logger.remove('2020/09/30');
-// Deletes the 30th of the September 2020 log file.
+logger.remove('2020/11/17');
+// Deletes the 27th of November 2020 log file.
 ```
 
 ## Defaults
 
-You can change things like log file save loaction, write defaults and read defaults by editing the `DEFAULTS` object at the top of the modules `src/index.js` file.
+Change the defaults for one of the functions that the module has.
+
+### Usage
+
+**Function**: `<logger>.defaults(<method>, [options]);`<br>
+**Returns**: The new defaults object of the choosen function.
+
+**Method {string}**: The name of the function you want to change the defaults for. Example: 'write', 'read'.<br>
+**Options {object}**: The new defaults which you want to set.
+
+### Examples
+
+```js
+logger.defaults('write', { prefix: 'INFO', format: '%date %time %prefix: %message' });
+// Changes the default prefix to 'INFO' and the format to '%date %time %prefix: %message'.
+
+logger.defaults('read', { array: true, blanks: false });
+// Ensures that the read function returns an array and removes all the blank lines.
+
+logger.defaults('root', { path: `${process.cwd()}/achieve/logs` });
+// Changes the default log root from '<project root>/logs' to '<project root>/achieve/logs'.
+```
 
 [version-image]: https://img.shields.io/github/package-json/v/ApteryxXYZ/day-log-savings?logo=github
 [downloads-image]: https://img.shields.io/npm/dt/day-log-savings?logo=npm

@@ -1,13 +1,12 @@
-/** Edit these to change what the module uses as defaults. */
+// Edit these to change what the module uses as defaults.
 const DEFAULTS = {
-    WRITE: { prefix: "auto", length: 100, stringify: true, stack: true },
-    READ: { array: false, lines: 15 },
-    ROOT: `${process.cwd()}/logs`
+    WRITE: { prefix: "LOG", length: 100, format: "[%time] [%prefix] %message", console: false, stringify: true, stack: true },
+    READ: { path: `${_date(true)}`, array: false, lines: 15, blanks: true },
+    ROOT: { path: `${process.cwd()}/logs` }
 },
     fs = require("fs"),
-    { version } = require("../package.json");
+    { name, description, version } = require("../package.json");
 
-/** Gets the current date, used to know where to save logs. */
 function _date(f) {
     let t = new Date(),
         y = t.getFullYear(),
@@ -16,7 +15,6 @@ function _date(f) {
     return f ? `${y}/${m}/${d}` : `${y}/${m}`;
 }
 
-/** Gets the current time, used to mark the time something was logged. */
 function _time() {
     let n = new Date(),
         h = ("0" + n.getHours()).slice(-2),
@@ -25,91 +23,95 @@ function _time() {
     return `${h}:${m}:${s}`;
 }
 
-/** Checks the inputted options to ensure they are valid, if not, throws an error. */
 function _options(o, f) {
     if (f == "write") {
-        if (typeof o.prefix != "string") throw new TypeError("Write options property `prefix` must be a string.");
-        if (typeof o.length != "number") throw new TypeError("Write options property `length` must be a number.");
-        if (typeof o.stringify != "boolean") throw new TypeError("Write options property `stringify` must be a boolean.")
-        if (typeof o.stack != "boolean") throw new TypeError("Write options property `stack` must be a boolean.");
+        if (typeof o.prefix != "string") throw new TypeError("Write options property 'prefix' must be a string.");
+        if (typeof o.format != "string") throw new TypeError("Write options property 'format' must be a string.");
+        if (typeof o.length != "number") throw new TypeError("Write options property 'length' must be a number.");
+        if (typeof o.console != "boolean") throw new TypeError("Write options property 'console' must be a boolean.");
+        if (typeof o.stringify != "boolean") throw new TypeError("Write options property 'stringify' must be a boolean.");
+        if (typeof o.stack != "boolean") throw new TypeError("Write options property 'stack' must be a boolean.");
     } else if (f == "read") {
-        if (typeof o.array != "boolean") throw new TypeError("Read options property `array` must be a boolean.");
-        if (typeof o.lines != "number") throw new TypeError("Read options property `lines` must be a number.");
-    };
+        if (typeof o.path != "string") throw new TypeError("Read options property 'path' must be a string.")
+        if (typeof o.array != "boolean") throw new TypeError("Read options property 'array' must be a boolean.");
+        if (typeof o.lines != "number") throw new TypeError("Read options property 'lines' must be a number.");
+        if (typeof o.blanks != "boolean") throw new TypeError("Read options property 'blanks' must be a boolean.")
+    } else if (f == "root") {
+        if (typeof o.path != "string") throw new TypeError("Root options property 'path' must be a string.");
+    }
 }
 
-/** Gets previous charactor in file. */
 function _char(p, s, c) {
     let b = Buffer.alloc(1);
     fs.readSync(p, b, 0, 1, s.size - (c + 1));
     return String.fromCharCode(b[0]);
 }
 
-/**
-* Writes an input to the logs, customizable with options.
-* @param {string} input [Required] The input of which you want to be logged.
-* @param {object} options [Optional] Additional options to customize the input.
-* @param {string} [options.prefix] The prefix which appears before the log input, case sensitive. Use auto to automatically choose an appropriate prefix. Defaults to 'auto'.
-* @param {number} [options.length] The maximum length the input can be before being put on a new line. Defaults to '100'.
-* @param {boolean} [options.stringify] If the input is an instance of 'Object', then stringify it. Defaults to 'true'.
-* @param {boolean} [options.stack] In case of an error, use stack property of Error. Defaults to 'false'.
-* @returns The string which was just added to todays log file.
-*/
-function write(input = null, options = {}) {
-    if (!input) throw new Error("Missing required 'input' parameter.");
-    options = Object.assign(DEFAULTS.WRITE, options);
-    _options(options, "write");
+function write(input, options = {}) {
+    if (!input) throw new Error("Write function is missing required 'input' parameter.");
 
-    let e = input instanceof Error, p = options.prefix;
-    if (p == "auto") p = e ? "ERROR" : "LOG";
-    if (options.stack && e) input = input.stack || input;
-    fs.mkdirSync(`${DEFAULTS.ROOT}/${_date()}`, { recursive: true });
-    let t = _time();
+    let cp = Object.assign({}, DEFAULTS.WRITE),
+        o = Object.assign(cp, options);
+    _options(o, "write");
 
-    if (input instanceof Object && options.stringify) input = JSON.stringify(input);
-    if (e) input = `\n[${t}] [${p}]\n${input}\n\n`;
-    else if (input.length < options.length) input = `[${t}] [${p}] ${input}\n`;
-    else input = `[${t}] [${p}]\n${input}\n`;
-    return fs.appendFileSync(`${DEFAULTS.ROOT}/${_date(true)}.log`, input, (err) => { if (err) throw err }) || input;
+    let e = input instanceof Error;
+    if (o.stack && e) input = input.stack;
+    fs.mkdirSync(`${DEFAULTS.ROOT.path}/${_date()}`, { recursive: true });
+    if (input instanceof Object && o.stringify && !e) input = JSON.stringify(input);
+    let t = _time(),
+        d = _date(true);
+
+    let l = o.format
+        .replace(/%time/gi, t)
+        .replace(/%date/gi, d)
+        .replace(/%prefix/gi, e ? "ERROR" : o.prefix)
+        .replace(/%message/gi, input.length > o.length ? `\n${input}\n` : `${input}\n`);
+
+    if (o.console || e) console.log(l.trim());
+    return fs.appendFileSync(`${DEFAULTS.ROOT.path}/${d}.log`, l, (err) => { if (err) throw err }) || l.trim();
 }
 
-/**
-* Reads and outputs the last customizable number lines of a log file.
-* @param {string} path [Optional] The path to the file you want to read. Format as 'year/month/date', defaults to todays date.
-* @param {object} options [Optional] Additional options to customize the output.
-* @param {boolean} [options.array] Whether you want the output in an array or not. Defaults to 'false'.
-* @param {number} [options.lines] The number of latest lines you want read. Defaults to '15'.
-* @returns Either an array or a string of the last lines of a log file. For example: '[20:23:16] [LOG] day\n[20:23:16] [LOG] log\n[20:23:16] [LOG] savings'
-*/
-function read(path = `${DEFAULTS.ROOT}/${_date(true)}.log`, options = {}) {
-    if (typeof path != "string") throw new TypeError("Read parameter `path` must be a string.");
-    if (!fs.existsSync(path)) throw new Error(`File at '${path}' does not exist.`);
-    options = Object.assign(DEFAULTS.READ, options);
-    _options(options, "read");
+function read(options = {}) {
+    let cp = Object.assign({}, DEFAULTS.READ),
+        o = Object.assign(cp, options);
+    _options(o, "read");
 
-    let f = fs.openSync(path),
-        s = fs.statSync(path),
+    let p = `${DEFAULTS.ROOT.path}/${o.path}.log`;
+    if (!fs.existsSync(p)) throw new Error(`File at '${p}' does not exist.`);
+
+    let f = fs.openSync(p),
+        s = fs.statSync(p),
         c = 0, l = 0, ls = "";
 
-    while (c < s.size && l < options.lines + 1) {
+    while (c < s.size && l < o.lines + 1) {
         let p = _char(f, s, c);
         ls = p + ls; c++;
         if (p == "\n" && c > 0) l++;
     }
 
-    fs.closeSync(f); ls = ls.trim();
-    return Buffer.from(ls, "binary").toString();
+    fs.closeSync(f);
+    let b = Buffer.from(ls, "binary").toString().trim();
+    let r = o.blanks ? b : b.replace(/\n+/g, "\n");
+    return o.array ? r.split(/\n/g) : r;
 }
 
-/**
-* Deletes a log file.
-* @param {string} path [Optional] The path to the file you want to read. Format as 'year/month/date', defaults to todays date.
-* @returns the path to the file that was just deleted. For example: '2020/11/23'
-*/
-function remove(path = `${DEFAULTS.ROOT}/${_date(true)}.log`) {
-    if (typeof path != "string") throw new TypeError("Read parameter `path` must be a string.");
-    if (!fs.existsSync(path)) throw new Error(`File at '${path}' does not exist.`);
-    return fs.unlinkSync(path, (e) => { if (e) throw e; }) || path;
+function remove(path) {
+    let p = path || `${DEFAULTS.ROOT.path}/${_date(true)}.log`;
+    if (typeof p != "string") throw new TypeError("Read parameter `path` must be a string.");
+    if (!fs.existsSync(p)) throw new Error(`File at '${p}' does not exist.`);
+    return fs.unlinkSync(p, (e) => { if (e) throw e; }) || p;
 }
 
-module.exports = { write, read, remove, version };
+function defaults(method, options = {}) {
+    if (!method || !method instanceof String)
+        throw new Error("Defaults function is either missing its 'method' parameter or what was inputted was not a string.");
+    if (!["write", "remove", "root"].includes(method))
+        throw new Error("Defaults function parameter 'method' is not a valid method name. Ensure it is one of the following: 'write', 'read', 'root'.")
+    if (!options || typeof options != "object")
+        throw new Error("Defaults function is either missing its 'options' parameter or what was inputted was not an object.");
+
+    _options(method, options);
+    return Object.assign(DEFAULTS[method.toUpperCase()], options);
+}
+
+module.exports = { write, read, remove, defaults, name, description, version };

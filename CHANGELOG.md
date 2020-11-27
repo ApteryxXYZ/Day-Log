@@ -3,16 +3,10 @@ The first release.
 - Added write function (writes to a log file).
 - Added read function (reads a log file).
 
-### 0.1.1 2020/09/30
+### 0.1.1, 0.1.2, 0.1.3 & 0.1.4 2020/09/30
 - Removed node-schedule as it was unused.
-
-### 0.1.2 2020/09/30
 - Made some small changes.
-
-### 0.1.3 2020/09/30
 - Updated README.md.
-
-### 0.1.4 2020/09/30
 - Fixed path problem in read function.
 
 ### 0.1.5 2020/10/01
@@ -46,7 +40,20 @@ The first release.
 
 ## 0.6.0 2020/11/23
 - Fixed read function reading todays log file even with input.
-- Added `stringify` option to write function, stringifys the input if it's an instance of 'Object'.
+- Added 'stringify' option to write function, stringifys the input if it's an instance of 'Object'.
 - Remove function now returns the date/path (2020/11/23) to the file that was just deleted.
 - Added more information to errors.
-- Updated README.md. 
+- Updated README.md.
+
+## 0.7.0 2020/11/27
+- Added 'defaults' function, change function defaults with a once line.
+- Added 'format' option to write function, changes the format of the logs.
+- Added 'console' option to  write function, logs input within the console along with log file.
+- Added 'blanks' option to read function, if false, removes all the blank lines from the output.
+- Moved read function parameter 'path' to within the options object (read({ path: '2020/11/27' })).
+- Changed some of the defaults.
+- Updated README.md.
+
+### 0.7.1 & 0.7.2 2020/11/27
+- Fixed the 'index.d.ts' file.
+- Fixed some spelling mistakes.
