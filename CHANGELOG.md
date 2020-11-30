@@ -40,7 +40,7 @@ The first release.
 
 ## 0.6.0 2020/11/23
 - Fixed read function reading todays log file even with input.
-- Added 'stringify' option to write function, stringifys the input if it's an instance of 'Object'.
+- Added 'stringify' option to write function, stringify the input if it's an instance of 'Object'.
 - Remove function now returns the date/path (2020/11/23) to the file that was just deleted.
 - Added more information to errors.
 - Updated README.md.
@@ -57,3 +57,9 @@ The first release.
 ### 0.7.1 & 0.7.2 2020/11/27
 - Fixed the 'index.d.ts' file.
 - Fixed some spelling mistakes.
+
+## 0.8.0 2020/11/30
+- Write option 'format' now takes an object containing 'message', 'time' and 'date'.
+- Moved extra functions from 'src/index.js' to 'src/\_.js'.
+- Added ability to change default file extension via defaults function.
+- Increased max first line length default from '100' to '150'.

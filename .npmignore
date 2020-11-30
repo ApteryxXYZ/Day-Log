@@ -1,3 +1,5 @@
 node_modules
+.github
 .gitignore
 test
+logs

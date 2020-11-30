@@ -18,7 +18,7 @@
 Day Log Savings is a simple, zero dependencies, Node.js logger that lets you log things in organized, day rotating files.<br>
 The name is a play on words of daylight savings, which started when this module was first created.
 
-Each day, a new log file is created, that file is then categorised into month and year folders.<br>By default, querys are logged like so: `[<time>] [<prefix>] <input>` but you can customize this by using the functions options or changing the defaults. Those querys are then written into log files and saved at `<project root>/logs/<year>/<month>/<day>.log`. For example: `/logs/2020/11/27.log`.
+Each day, a new log file is created, that file is then categorised into month and year folders.<br>By default, query's are logged like so: `[<time>] [<prefix>] <input>` but you can customize this by using the functions options or changing the defaults. Those query's are then written into log files and saved at `<project root>/logs/<year>/<month>/<day>.log`. For example: `/logs/2020/11/27.log`.
 
 ## Installation
 
@@ -36,8 +36,14 @@ Writes an input to the logs, customizable with options.
 **Input {any}**: The input which you want to be logged.<br>
 **Options {object}**: {
 
-- **Prefix {string}**: The prefix which appears before the log input, case sentitive. In case of error, prefix is automatically changed to 'ERROR'. Defaults to 'LOG'.
-- **Format {string}**: The format in which your input will be logged in. Use '%option' to define where within the string things like 'time', 'prefix' and 'message' appear. Options are 'time', 'date', 'prefix' and 'message'. Defaults to '[%time] [%prefix] %message'.
+- **Prefix {string}**: The prefix which appears before the log input, case sensitive. In case of error, prefix is automatically changed to 'ERROR'. Defaults to 'LOG'.
+- **Format {object}**: { Change the format of the dates, timestamps and the log message itself. Use `%<option>` to define where within the string you want said option to appear.
+
+    - **Message {string}**: The format in which your input appears in the logs. Options are '%time', '%date', '%prefix' and '%message'. Defaults to '[%time] [%prefix] %message'.
+    - **Time {string}**: The format which the timestamps are displayed in. Options are '%hour', '%minute' and '%second'. Defaults to '%hour:%minute:%second'.
+    - **Date {string}**: The format which the date are displayed in. Does not change the path to where logs are saved. Options are '%year', '%month' and '%day'. Defaults to '%year/%month/%day'.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
 - **Length {number}**: The maximum length the input can be before being put on a new line. Defaults to '100'.
 - **Console {boolean}**: Whether or not to log the query in the console along with the log file. Errors will always be logged. Defaults to 'false'.
 - **Stringify {boolean}**: If the input is an instance of 'Object', then JSON.stringify() it . Defaults to 'true'.
@@ -54,8 +60,8 @@ logger.write('Input using the default options.');
 logger.write('Has a custom prefix.', { prefix: 'cUsToM' });
 // [00:00:00] [cUsToM] Has a custom prefix.
 
-logger.write('Custom format with date.', { format: '%date %time %prefix: %message' });
-// 2020/11/27 00:00:00 LOG: Custom format with date.
+logger.write('Custom date, time and message format.', { format: { message: '[%date %time] [%prefix]: %message', date: '%day/%month/%year', time: '%hour.%minute.%second' } });
+// [27/11/2020 00.00.00] [LOG]: Custom date, time and message format.
 
 logger.write('Max first line input length reached.', { length: 1 });
 // [00:00:00] [LOG]
@@ -83,7 +89,7 @@ Reads and outputs the last x number lines from the bottom of a log file.
 
 **Options {object}**: {
 
-- **Path {string}**: The path, formated as 'year/month/day', to the log file which you want to read. Defaults to to todays date.
+- **Path {string}**: The path, formatted as 'year/month/day', to the log file which you want to read. Defaults to to todays date.
 - **Lines {number}**: The number of lines you want to read. Defaults to '15'.
 - **Array {boolean}**: Whether you want the output in an array (where one line equal one item) or not. Defaults to 'false'.
 - **Blanks {boolean}**: Whether or not to include blank lines in the output, both string and array. Defaults to 'true'.
@@ -110,15 +116,15 @@ Deletes a log file.
 ## Usage
 
 **Function**: `<logger>.remove([path]);`<br>
-**Returns**: The path, formated as 'year/month/day', to the file that was just deleted.
+**Returns**: The path, formatted as 'year/month/day', to the file that was just deleted.
 
-**Path {string}**: The path, formated as 'year/month/day', to the log file which you want to delete. Defaults to to todays date.
+**Path {string}**: The path, formatted as 'year/month/day', to the log file which you want to delete. Defaults to to todays date.
 
 ```js
 logger.remove();
 // Deletes todays log file.
 
-logger.remove('2020/11/17');
+logger.remove('2020/11/27');
 // Deletes the 27th of November 2020 log file.
 ```
 
@@ -129,7 +135,7 @@ Change the defaults for one of the functions that the module has.
 ### Usage
 
 **Function**: `<logger>.defaults(<method>, [options]);`<br>
-**Returns**: The new defaults object of the choosen function.
+**Returns**: The new defaults object of the chosen function.
 
 **Method {string}**: The name of the function you want to change the defaults for. Example: 'write', 'read'.<br>
 **Options {object}**: The new defaults which you want to set.
