@@ -1,5 +1,13 @@
-node_modules
-.github
+node_modules/
+test/
+logs/
+
+.github/
 .gitignore
-test
-logs
+.gitattributes
+
+.npmrc
+.editorconfig
+.travis.yml
+
+CHANGELOG.md

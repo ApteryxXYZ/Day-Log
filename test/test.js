@@ -1,13 +1,13 @@
 var logger;
 
 try {
-    logger = require("day-log-savings");
+  logger = require("day-log-savings");
 } catch (e) {
-    try {
-        logger = require(`${process.cwd()}/node_modules/day-log-savings`);
-    } catch (e) {
-        logger = require("../src");
-    }
+  try {
+    logger = require(`${process.env.PWD}/node_modules/day-log-savings`);
+  } catch (e) {
+    logger = require("../");
+  }
 }
 
 logger.write("Input using the default options.");

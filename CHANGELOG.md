@@ -63,3 +63,6 @@ The first release.
 - Moved extra functions from 'src/index.js' to 'src/\_.js'.
 - Added ability to change default file extension via defaults function.
 - Increased max first line length default from '100' to '150'.
+
+# 1.0.0 2021/01/01
+- Version 1.0.0

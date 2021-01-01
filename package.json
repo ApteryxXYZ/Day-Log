@@ -1,6 +1,6 @@
 {
     "name": "day-log-savings",
-    "version": "0.8.0",
+    "version": "1.0.0",
     "description": "Day Log Savings is a simple, zero dependencies, Node.js logger that lets you log things in organized, day rotating files.",
     "author": {
         "name": "Apteryx",
@@ -10,11 +10,17 @@
     "main": "src/index.js",
     "license": "MIT",
     "homepage": "https://www.apteryx.xyz/npm/day-log-savings",
+    "changelog": {
+        "url": "https://github.com/ApteryxXYZ/Day-Log-Savings/blob/CHANGELOG.md"
+    },
     "bugs": {
         "url": "https://github.com/ApteryxXYZ/Day-Log-Savings/issues"
     },
     "scripts": {
         "test": "node test/test.js"
+    },
+    "engines": {
+        "node": ">=12"
     },
     "repository": {
         "type": "git",
