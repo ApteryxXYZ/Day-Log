@@ -1,5 +1,6 @@
 const { mkdirSync: mk, appendFileSync: af, existsSync: ex, openSync: os, statSync: ss, closeSync: cs, unlinkSync: ul, } = require('fs'),
-    { resolve } = require('path'),
+    { resolve: rs } = require('path'),
+    { inspect: is } = require('util'),
     { name, description, version } = require('../package.json'),
     _ = require('./_'),
     DEFAULTS = {
@@ -23,8 +24,8 @@ function write(input, options = {}) {
 
     let e = input instanceof Error;
     if (o.stack && e) input = input.stack;
-    mk(resolve(`${DEFAULTS.ROOT.path}/${_.date('%year/%month')}`), { recursive: true });
-    if (input instanceof Object && o.stringify && !e) input = JSON.stringify(input);
+    mk(rs(`${DEFAULTS.ROOT.path}/${_.date('%year/%month')}`), { recursive: true });
+    if (input instanceof Object && o.stringify && !e) input = JSON.stringify(is(input));
     let t = _.time(o.format.time),
         d = _.date(o.format.date);
 
