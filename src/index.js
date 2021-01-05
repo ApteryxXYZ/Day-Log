@@ -25,7 +25,7 @@ function write(input, options = {}) {
     let e = input instanceof Error;
     if (o.stack && e) input = input.stack;
     mk(rs(`${DEFAULTS.ROOT.path}/${_.date('%year/%month')}`), { recursive: true });
-    if (input instanceof Object && o.stringify && !e) input = JSON.stringify(is(input));
+    if (input instanceof Object && o.stringify && !e) input = is(input);
     let t = _.time(o.format.time),
         d = _.date(o.format.date);
 

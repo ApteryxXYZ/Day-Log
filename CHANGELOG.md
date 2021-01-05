@@ -69,3 +69,6 @@ The first release.
 
 ### 1.0.1 2021/01/04
 - Fixed 'TypeError: Converting circular structure to JSON' when trying to stringify objects with circular references.
+
+### 1.0.2 2021/01/05
+- Fixed objects getting stringified twice.

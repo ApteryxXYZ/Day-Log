@@ -1,6 +1,6 @@
 {
     "name": "day-log-savings",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "Day Log Savings is a simple, zero dependencies, Node.js logger that lets you log things in organized, day rotating files.",
     "author": {
         "name": "Apteryx",
