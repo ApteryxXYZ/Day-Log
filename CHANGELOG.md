@@ -73,6 +73,7 @@ The first release.
 ### 1.0.2 2021/01/05
 - Fixed objects getting stringified twice.
 
-### 1.0.3 2021/02/16
+### 1.0.3 & 1.0.4 2021/02/16
 - Added proper test.
 - Defined node engine in package.json.
+- Fixed test folder being in .npmignore.
