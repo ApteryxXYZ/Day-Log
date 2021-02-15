@@ -1,27 +1,56 @@
-var logger;
+const assert = require('assert'),
+    join = require('path').join;
 
-try {
-  logger = require("day-log-savings");
-} catch (e) {
-  try {
-    logger = require(`${process.env.PWD}/node_modules/day-log-savings`);
-  } catch (e) {
-    logger = require("../");
-  }
-}
+describe('logger', function () {
+    const logger = require('../'),
+        package = require('../package.json');
 
-logger.write("Input using the default options.");
-logger.write("Has a custom prefix.", { prefix: "cUsToM" });
-logger.write("Custom format with date.", { format: { message: "%date %time %prefix: %message" } });
-logger.write("Custom timestamp format.", { format: { time: "%hour:%minute:%second" } });
-logger.write("Custom date format.", { format: { date: "%day/%month/%year" } });
-logger.write("Max first line input length reached.", { length: 1 });
-logger.write("This will be logged in the console and log file.", { console: true });
-logger.write({ thisObjectWill: "not be stringified" }, { stringify: false });
-logger.write(new Error("This error will not be stacked."), { stack: false });
+    describe('#defaults', function () {
+        it('should set new defaults for a function and return them', function () {
+            let newDefaults = logger.defaults('root', { path: join(__dirname, '/logs') });
+            assert(logger.DEFAULTS.ROOT, newDefaults);
+        })
+    })
 
-console.log("\nRegular:", logger.read());
-console.log("\nArray:", logger.read({ array: true }));
-console.log("\nString 5 Lines No Blanks:", logger.read({ lines: 5, blanks: false }));
+    describe('#write', function () {
+        it('should write to todays log file the inputted value, then return what was logged', function () {
+            let loggedValue = logger.write('value', { prefix: 'CUSTOM' });
+            assert(loggedValue, logger.read({ lines: 1 }))
+        })
+    })
 
-logger.remove();
+    describe('#read', function () {
+        it('should read the last lines of the selected log file', function () {
+            let readString = logger.read({ lines: 1 }),
+                readArray = logger.read({ array: true });
+            assert(readString, readArray[readArray.length - 1]);
+        })
+    })
+
+    describe('#remove', function () {
+        it('should delete the selected log file', function () {
+            let removedFile = logger.remove(),
+                date = new Date();
+            assert(removedFile,
+                `${date.getFullYear()}/${('0' + (date.getMonth() + 1)).slice(-2)}/${('0' + date.getDate()).slice(-2)}`);
+        })
+    })
+
+    describe('#name', function () {
+        it('should return the name of this node module', function () {
+            assert(logger.name, package.name);
+        })
+    })
+
+    describe('#description', function () {
+        it('should return the description of this node module', function () {
+            assert(logger.description, package.description);
+        })
+    })
+
+    describe('#version', function () {
+        it('should return the version of this node module', function () {
+            assert(logger.version, package.version);
+        })
+    })
+})

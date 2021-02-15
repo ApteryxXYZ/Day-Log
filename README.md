@@ -2,8 +2,6 @@
 
 [![Version][version-image]][github-url][![Downloads][downloads-image]][npm-url][![JavaScript][javascript-image]][github-url][![License][license-image]][license-url]
 
-- [**Homepage**](https://www.apteryx.xyz/npm/day-log-savings)
-
 ## Table Of Contents
 
 - [**About**](#about)
@@ -23,6 +21,10 @@ Each day, a new log file is created, that file is then categorised into month an
 ## Installation
 
 ```npm install day-log-savings```
+
+## Test
+
+```npm test```
 
 ## Write
 

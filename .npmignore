@@ -6,7 +6,6 @@ logs/
 .gitignore
 .gitattributes
 
-.npmrc
 .editorconfig
 .travis.yml
 

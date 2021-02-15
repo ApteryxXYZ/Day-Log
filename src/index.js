@@ -79,10 +79,23 @@ function defaults(method, options = {}) {
         throw new Error('Defaults function is either missing its \'options\' parameter or what was inputted was not an object.');
 
     _.options(method, options);
+    let m = method.toUpperCase()
     return DEFAULTS[method.toUpperCase()] = _.merge(DEFAULTS[method.toUpperCase()], options);
 }
 
-module.exports = {
-    write, read, remove, defaults,
-    name, description, version
+module.exports = new class Logger {
+    constructor() {
+        this.write = write;
+        this.read = read;
+        this.remove = remove;
+        this.defaults = defaults;
+
+        this.name = name;
+        this.description = description;
+        this.version = version;
+    }
+
+    get DEFAULTS () {
+        return DEFAULTS;
+    }
 };
